@@ -1,11 +1,9 @@
-﻿namespace Reciclagem.api.Models
+namespace Reciclagem.api.ViewModel
 {
-    public class CidadaoModel
+    public class CidadaoUpdateViewModel
     {
-        public int CidadaoId { get; set; }
         public string? Nome { get; set; }
         public string? Email { get; set; }
         public DateTime? DataNascimento { get; set; }
-
     }
 }
