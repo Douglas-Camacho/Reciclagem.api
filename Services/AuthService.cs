@@ -1,4 +1,7 @@
-﻿namespace Reciclagem.api.Services
+﻿using Reciclagem.api.Models;
+using Reciclagem.api.Services;
+
+namespace Reciclagem.api.Services
 {
     public class AuthService : IAuthService
     {

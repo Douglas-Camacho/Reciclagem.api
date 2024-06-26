@@ -15,6 +15,17 @@ namespace Reciclagem.api.Data.Repository
 
         public IEnumerable<CidadaoModel> GetAll() => _context.Set<CidadaoModel>().ToList();
 
+        public IEnumerable<CidadaoModel> GetAll(int page, int size)
+        { 
+            return _context.Set<CidadaoModel>()
+                .Skip((page - 1) * page)
+                .Take(size)
+                .AsNoTracking()
+                .ToList();
+        }
+
+
+
         public CidadaoModel GetById(int id) => _context.Set<CidadaoModel>().Find(id);
 
         public void Add(CidadaoModel cidadao)

@@ -46,7 +46,7 @@ namespace Reciclagem.api.Controllers
                 Subject = new System.Security.Claims.ClaimsIdentity(new Claim[]
                 {
                     new Claim(ClaimTypes.Name, user.Username),
-                    new Claim(ClaimTypes.Role, user.Funcao),
+                    new Claim(ClaimTypes.Role, user.Role),
                     new Claim(ClaimTypes.Hash, Guid.NewGuid().ToString())
                 }),
                 Expires = DateTime.UtcNow.AddMinutes(15),
