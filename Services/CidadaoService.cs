@@ -17,6 +17,16 @@ namespace Reciclagem.api.Services
 
         public IEnumerable<CidadaoModel> ListarCidadaos() => _repository.GetAll();
 
+        public IEnumerable<CidadaoModel> ListarCidadaos(int pagina, int tamanho = 10)
+        {
+           return _repository.GetAll(pagina, tamanho);
+        }
+
+        public IEnumerable<CidadaoModel> ListarCidadaosUltimaReferencia(int ultimoId, int tamanho = 10)
+        {
+            return _repository.GetAllReference(ultimoId, tamanho);
+        }
+
         public void CriarCidadao(CidadaoModel cidadao) => _repository.Add(cidadao);
         public void AtualizarCidadao(CidadaoModel cidadao) => _repository.Update(cidadao);
         public void DeletarCidadao(int id)

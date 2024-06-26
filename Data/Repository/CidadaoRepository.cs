@@ -24,7 +24,16 @@ namespace Reciclagem.api.Data.Repository
                 .ToList();
         }
 
-
+        public IEnumerable<CidadaoModel> GetAllReference(int lastReference, int size)
+        {
+            var cidadaos = _context.Set<CidadaoModel>()
+                .Where(c => c.CidadaoId > lastReference)
+                .OrderBy(c => c.CidadaoId)
+                .Take(size)
+                .AsNoTracking()
+                .ToList();
+            return cidadaos;
+        }
 
         public CidadaoModel GetById(int id) => _context.Set<CidadaoModel>().Find(id);
 

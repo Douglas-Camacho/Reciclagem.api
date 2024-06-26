@@ -23,22 +23,23 @@ namespace Reciclagem.api.Controllers
             _mapper = mapper;
         }
 
-
+        
         //busca por todos os cidadãos cadastrados
-        [HttpGet]
-        //caso precise fazer algum teste no código remova esse [Authorize]
-        [Authorize(Roles = "operador, analista, diretor")]
-        public ActionResult<IEnumerable<CidadaoViewModel>> Get()
-        {
-            var lista = _cidadaoService.ListarCidadaos();
-            var viewModelList = _mapper.Map<IEnumerable<CidadaoViewModel>>(lista);
+        //[HttpGet]
+        ////caso precise fazer algum teste no código remova esse [Authorize]
+        //[Authorize(Roles = "operador, analista, diretor")]
+        //public ActionResult<IEnumerable<CidadaoViewModel>> Get()
+        //{
+        //    var lista = _cidadaoService.ListarCidadaos();
+        //    var viewModelList = _mapper.Map<IEnumerable<CidadaoViewModel>>(lista);
 
-            if (viewModelList == null)
-            {
-                return NoContent();
-            }
-            return Ok(viewModelList);
-        }
+        //    if (viewModelList == null)
+        //    {
+        //        return NoContent();
+        //    }
+        //    return Ok(viewModelList);
+        //}
+        
 
         //busca por um único cidadão
         [HttpGet("{id}")]
@@ -78,5 +79,26 @@ namespace Reciclagem.api.Controllers
             _cidadaoService.DeletarCidadao(id);
             return NoContent();
         }
+
+        [HttpGet]
+        public ActionResult<IEnumerable<CidadaoPaginacaoViewModel>> Get([FromQuery] int pagina = 1, [FromQuery] int tamanho = 10)
+        {
+            var cidadaos = _cidadaoService.ListarCidadaos(pagina, tamanho);
+            var viewModelList = _mapper.Map<IEnumerable<CidadaoViewModel>>(cidadaos);
+
+            var viewModel = new CidadaoPaginacaoViewModel
+            {
+                //Pagina = pagina,
+                CurrentPage = pagina,
+                PageSize = tamanho
+            };
+
+            if (viewModelList == null)
+            {
+                return NoContent();
+            }
+            return Ok(viewModel);
+        }
+
     }
 }
