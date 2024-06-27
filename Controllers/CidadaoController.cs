@@ -5,6 +5,7 @@ using Reciclagem.api.Models;
 using Reciclagem.api.ViewModel;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using System.Net.Mail;
 
 
 namespace Reciclagem.api.Controllers
@@ -16,15 +17,17 @@ namespace Reciclagem.api.Controllers
     {
         private readonly ICidadaoService _cidadaoService;
         private readonly IMapper _mapper;
+        private readonly IEmailService _emailService;
 
-        public CidadaoController(ICidadaoService cidadaoService, IMapper mapper)
+        public CidadaoController(ICidadaoService cidadaoService, IMapper mapper, IEmailService emailService)
         {
             _cidadaoService = cidadaoService;
             _mapper = mapper;
+            _emailService = emailService;
         }
 
-        
-        //busca por todos os cidadãos cadastrados
+
+        ////busca por todos os cidadãos cadastrados
         //[HttpGet]
         ////caso precise fazer algum teste no código remova esse [Authorize]
         //[Authorize(Roles = "operador, analista, diretor")]
@@ -39,7 +42,7 @@ namespace Reciclagem.api.Controllers
         //    }
         //    return Ok(viewModelList);
         //}
-        
+
 
         //busca por um único cidadão
         [HttpGet("{id}")]
@@ -98,6 +101,31 @@ namespace Reciclagem.api.Controllers
                 return NoContent();
             }
             return Ok(viewModel);
+        }
+        [HttpPost("{id}/enviar-alerta")]
+        [Authorize(Roles = "analista, diretor")]
+        public ActionResult EnviarAlerta([FromRoute] int id, [FromBody] AlertaViewModel alerta)
+        {
+            var cidadao = _cidadaoService.ObterCidadaoPorId(id);
+
+            if (cidadao == null)
+            {
+                return NotFound();
+            }
+
+            string assunto = alerta.Assunto;
+            string mensagem = alerta.Mensagem;
+
+            try
+            {
+                _emailService.EnviarEmail(cidadao.Email, assunto, mensagem);
+                return Ok("E-mail de alerta enviado com sucesso.");
+            }
+            catch (Exception ex)
+            {
+                // Trate o erro conforme necessário
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao enviar e-mail: {ex.Message}");
+            }
         }
 
     }

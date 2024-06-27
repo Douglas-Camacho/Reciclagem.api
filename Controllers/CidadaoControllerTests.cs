@@ -17,7 +17,7 @@ public class CidadaoControllerTests
     {
         _cidadaoServiceMock = new Mock<ICidadaoService>();
         _mapperMock = new Mock<IMapper>();
-        _controller = new CidadaoController(_cidadaoServiceMock.Object, _mapperMock.Object);
+        _controller = new CidadaoController(_cidadaoServiceMock.Object, _mapperMock.Object, null);
     }
 
     [Fact]

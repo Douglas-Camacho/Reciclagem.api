@@ -12,4 +12,6 @@ namespace Reciclagem.api.Data.Repository
         void Update(CidadaoModel cidadao);
         void Delete(CidadaoModel cidadao);
     }
+
+
 }
