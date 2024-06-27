@@ -36,7 +36,7 @@ namespace Reciclagem.api.Controllers
 
         private string GenerateJwtToken(UserModel user)
         {
-            byte[] secret = Encoding.ASCII.GetBytes("123456789");
+            byte[] secret = Encoding.UTF8.GetBytes("9f86d081884c7d659a2feaa0c55ad015a3bf4f1d2b0b822cd15d6e1f16f2f603");
             var securityKey = new SymmetricSecurityKey(secret);
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 

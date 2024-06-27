@@ -11,8 +11,11 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
 // Add services to the container.
+builder.Services.AddDbContext<DatabaseContext>(options =>
+    options.UseOracle(builder.Configuration.GetConnectionString("OracleConnection")));
+
+
 
 #region AutoMapper
 // Config do AutoMapper
@@ -41,7 +44,7 @@ builder.Services.AddAuthentication(options =>
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("123456789")),
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("9f86d081884c7d659a2feaa0c55ad015a3bf4f1d2b0b822cd15d6e1f16f2f603")),
         };
     });
 #endregion
@@ -54,6 +57,16 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
+    dbContext.Database.Migrate(); // Applies pending migrations
+}
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
