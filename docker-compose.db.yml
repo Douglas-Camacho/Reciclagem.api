@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  oracle-db:
+    image: gvenzl/oracle-free
+    ports:
+      - "1521:1521"
+    environment:
+      - ORACLE_PASSWORD=admin
+      - APP_USER=admin
+      - APP_USER_PASSWORD=admin
+      - ORACLE_DATABASE=reciclagem
+    volumes:
+      - oracle-data:/opt/oracle/oradata
+
+volumes:
+  oracle-data:
